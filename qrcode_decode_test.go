@@ -93,7 +93,7 @@ func TestDecodeAllVersionLevels(t *testing.T) {
 				version,
 				level)
 
-			q, err := NewWithForcedVersion(
+			q, err := newWithForcedVersion(
 				fmt.Sprintf("v-%d l-%d", version, level), version, level)
 			if err != nil {
 				t.Fatal(err.Error())
@@ -196,7 +196,7 @@ func zbarimgDecode(q *QRCode) (string, error) {
 	}
 
 	cmd := exec.Command("zbarimg", "--quiet", "-Sdisable",
-		"-Sqrcode.enable", "-")
+		"-Sqrcode.enable", "/dev/stdin")
 
 	var out bytes.Buffer
 

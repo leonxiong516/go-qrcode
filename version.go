@@ -9,6 +9,8 @@ import (
 	bitset "github.com/leonxiong516/go-qrcode/bitset"
 )
 
+var BorderWidth int = 2
+
 // Error detection/recovery capacity.
 //
 // There are several levels of error detection/recovery capacity. Higher levels
@@ -3034,7 +3036,7 @@ func (v qrCodeVersion) symbolSize() int {
 // quietZoneSize returns the number of pixels of border space on each side of
 // the QR Code. The quiet space assists with decoding.
 func (v qrCodeVersion) quietZoneSize() int {
-	return 4
+	return BorderWidth
 }
 
 // getQRCodeVersion returns the QR Code version by version number and recovery

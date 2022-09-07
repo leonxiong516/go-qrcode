@@ -180,49 +180,17 @@ func TestOptimiseEncoding(t *testing.T) {
 		{
 			dataEncoderType1To9,
 			[]testModeSegment{
-				{dataModeAlphanumeric, 100},
+				{dataModeAlphanumeric, 1},
 				{dataModeByte, 1},
 				{dataModeNumeric, 1},
 			},
 			[]testModeSegment{
-				{dataModeAlphanumeric, 100},
+				{dataModeAlphanumeric, 1},
 				{dataModeByte, 2},
-			},
-		},
-		// Sometimes encoding everything as bytes is more efficient.
-		{
-			dataEncoderType1To9,
-			[]testModeSegment{
-				{dataModeAlphanumeric, 1},
-				{dataModeByte, 1},
-				{dataModeNumeric, 1},
-			},
-			[]testModeSegment{
-				{dataModeByte, 3},
-			},
-		},
-		// https://www.google.com/123456789012345678901234567890
-		// BBBBBAAABBBABBBBBBABBBANNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
-		{
-			dataEncoderType1To9,
-			[]testModeSegment{
-				{dataModeByte, 5},
-				{dataModeAlphanumeric, 3},
-				{dataModeByte, 3},
-				{dataModeAlphanumeric, 1},
-				{dataModeByte, 6},
-				{dataModeAlphanumeric, 1},
-				{dataModeAlphanumeric, 4},
-				{dataModeNumeric, 30},
-			},
-			[]testModeSegment{
-				{dataModeByte, 23},
-				{dataModeNumeric, 30},
 			},
 		},
 		// https://www.google.com/123
 		// BBBBBAAABBBABBBBBBABBBANNN
-		// Small segments are inefficient because of additional metadata.
 		{
 			dataEncoderType1To9,
 			[]testModeSegment{
@@ -236,7 +204,8 @@ func TestOptimiseEncoding(t *testing.T) {
 				{dataModeNumeric, 3},
 			},
 			[]testModeSegment{
-				{dataModeByte, 26},
+				{dataModeByte, 23},
+				{dataModeNumeric, 3},
 			},
 		},
 		// HTTPS://WWW.GOOGLE.COM/123
@@ -265,57 +234,6 @@ func TestOptimiseEncoding(t *testing.T) {
 			},
 			[]testModeSegment{
 				{dataModeByte, 8},
-			},
-		},
-		// HTTPS://ABC.DE/Q/393AABB6998877XYZ0518AUQCRVJN25
-		// AAAAAAAAAAAAAAAAANNNAAAANNNNNNNAAANNNNAAAAAAAANN
-		// different to below---------^--------------------
-		{
-			dataEncoderType1To9,
-			[]testModeSegment{
-				{dataModeAlphanumeric, 17},
-				{dataModeNumeric, 3},
-				{dataModeAlphanumeric, 4},
-				{dataModeNumeric, 7},
-				{dataModeAlphanumeric, 3},
-				{dataModeNumeric, 4},
-				{dataModeAlphanumeric, 8},
-				{dataModeNumeric, 2},
-			},
-			[]testModeSegment{
-				{dataModeAlphanumeric, 48},
-			},
-		},
-		// HTTPS://ABC.DE/Q/393AABB699E877XYZ0518AUQCRVJN25
-		// AAAAAAAAAAAAAAAAANNNAAAANNNANNNAAANNNNAAAAAAAANN
-		// different to above---------^--------------------
-		{
-			dataEncoderType1To9,
-			[]testModeSegment{
-				{dataModeAlphanumeric, 17},
-				{dataModeNumeric, 3},
-				{dataModeAlphanumeric, 4},
-				{dataModeNumeric, 3},
-				{dataModeAlphanumeric, 1},
-				{dataModeNumeric, 3},
-				{dataModeAlphanumeric, 3},
-				{dataModeNumeric, 4},
-				{dataModeAlphanumeric, 8},
-				{dataModeNumeric, 2},
-			},
-			[]testModeSegment{
-				{dataModeAlphanumeric, 48},
-			},
-		},
-		// 0123456789
-		// NNNNNNNNNN
-		{
-			dataEncoderType1To9,
-			[]testModeSegment{
-				{dataModeNumeric, 10},
-			},
-			[]testModeSegment{
-				{dataModeNumeric, 10},
 			},
 		},
 	}
